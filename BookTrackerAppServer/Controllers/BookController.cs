@@ -1,13 +1,15 @@
 ﻿using BookTrackerAppServer.Database;
 using BookTrackerAppServer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookTrackerAppServer.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class BookController : Controller
+    public class BookController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly BookDbContext _bookDbContext;
         public BookController(BookDbContext bookDbContext)

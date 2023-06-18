@@ -9,6 +9,25 @@ namespace BookTrackerAppServer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "bookBorrowRecords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Borrower = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Book = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sn = table.Column<int>(type: "int", nullable: false),
+                    BDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false),
+                    BorrowCharge = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_bookBorrowRecords", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "books",
                 columns: table => new
                 {
@@ -24,24 +43,6 @@ namespace BookTrackerAppServer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_books", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "borrowDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Sn = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Book = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<long>(type: "bigint", nullable: false),
-                    Bdate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rdate = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_borrowDetails", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,47 +89,6 @@ namespace BookTrackerAppServer.Migrations
                 {
                     table.PrimaryKey("PK_credentials", x => x.Id);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "bookBorrowRecords",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BorrowerId = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false),
-                    Sn = table.Column<int>(type: "int", nullable: false),
-                    BDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<long>(type: "bigint", nullable: false),
-                    BorrowCharge = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_bookBorrowRecords", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_bookBorrowRecords_books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "books",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_bookBorrowRecords_consumers_BorrowerId",
-                        column: x => x.BorrowerId,
-                        principalTable: "consumers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_bookBorrowRecords_BookId",
-                table: "bookBorrowRecords",
-                column: "BookId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_bookBorrowRecords_BorrowerId",
-                table: "bookBorrowRecords",
-                column: "BorrowerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -137,19 +97,16 @@ namespace BookTrackerAppServer.Migrations
                 name: "bookBorrowRecords");
 
             migrationBuilder.DropTable(
-                name: "borrowDetails");
+                name: "books");
+
+            migrationBuilder.DropTable(
+                name: "consumers");
 
             migrationBuilder.DropTable(
                 name: "contacts");
 
             migrationBuilder.DropTable(
                 name: "credentials");
-
-            migrationBuilder.DropTable(
-                name: "books");
-
-            migrationBuilder.DropTable(
-                name: "consumers");
         }
     }
 }

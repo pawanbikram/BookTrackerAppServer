@@ -9,6 +9,5 @@
         public long Price { get; set; }
         public long Quantity { get; set; }
         public bool Status { get; set; }
-        public virtual ICollection<BookBorrowRecord> BookBorrowRecords { get; set; }
     }
 }

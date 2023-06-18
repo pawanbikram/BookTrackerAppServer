@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookTrackerAppServer.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20230615090929_V1")]
+    [Migration("20230617185713_V1")]
     partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,14 +65,14 @@ namespace BookTrackerAppServer.Migrations
                     b.Property<string>("BDate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
+                    b.Property<string>("Book")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("BorrowCharge")
-                        .HasColumnType("bigint");
+                    b.Property<float>("BorrowCharge")
+                        .HasColumnType("real");
 
-                    b.Property<int>("BorrowerId")
-                        .HasColumnType("int");
+                    b.Property<string>("Borrower")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
@@ -85,42 +85,7 @@ namespace BookTrackerAppServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("BorrowerId");
-
                     b.ToTable("bookBorrowRecords");
-                });
-
-            modelBuilder.Entity("BookTrackerAppServer.Models.BorrowDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Bdate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Book")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("Quantity")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Rdate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Sn")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("borrowDetails");
                 });
 
             modelBuilder.Entity("BookTrackerAppServer.Models.Consumer", b =>
@@ -187,35 +152,6 @@ namespace BookTrackerAppServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("credentials");
-                });
-
-            modelBuilder.Entity("BookTrackerAppServer.Models.BookBorrowRecord", b =>
-                {
-                    b.HasOne("BookTrackerAppServer.Models.Book", "Book")
-                        .WithMany("BookBorrowRecords")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookTrackerAppServer.Models.Consumer", "Consumer")
-                        .WithMany("BookBorrowRecords")
-                        .HasForeignKey("BorrowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Consumer");
-                });
-
-            modelBuilder.Entity("BookTrackerAppServer.Models.Book", b =>
-                {
-                    b.Navigation("BookBorrowRecords");
-                });
-
-            modelBuilder.Entity("BookTrackerAppServer.Models.Consumer", b =>
-                {
-                    b.Navigation("BookBorrowRecords");
                 });
 #pragma warning restore 612, 618
         }
